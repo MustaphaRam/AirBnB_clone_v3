@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 """This is the user module or class"""
-
 import os
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, Integer, String, Float
@@ -46,7 +45,7 @@ class User(BaseModel, Base):
         :return: password (hashed)
         """
         return self.__dict__.get("password")
-    
+
     @password.setter
     def password(self, password):
         """

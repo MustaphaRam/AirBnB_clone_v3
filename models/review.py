@@ -6,6 +6,7 @@ from models.base_model import BaseModel, Base
 from sqlalchemy import Column, Integer, String, ForeignKey, Float
 storage_type = os.environ.get('HBNB_TYPE_STORAGE')
 
+
 class Review(BaseModel, Base):
     """This is the class for Review
     Attributes:

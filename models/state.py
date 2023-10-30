@@ -8,6 +8,7 @@ import models
 import shlex
 storage_type = os.environ.get('HBNB_TYPE_STORAGE')
 
+
 class State(BaseModel, Base):
     """This is the class for State
     Attributes:
