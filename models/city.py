@@ -1,43 +1,26 @@
-#!/usr/bin/python3
-"""This is the city class"""
-
-import os
-from models.base_model import BaseModel, Base
-from sqlalchemy.orm import relationship
-from sqlalchemy import Column, Integer, String, Float, ForeignKey
+#!/usr/bin/python
+""" holds class City"""
 import models
-storage_type = os.environ.get('HBNB_TYPE_STORAGE')
+from models.base_model import BaseModel, Base
+from os import getenv
+import sqlalchemy
+from sqlalchemy import Column, String, ForeignKey
+from sqlalchemy.orm import relationship
 
 
 class City(BaseModel, Base):
-    """This is the class for City
-    Attributes:
-        state_id: The state id
-        name: input name
-    """
-    if storage_type == "db":
-        __tablename__ = "cities"
-        name = Column(String(128), nullable=False)
+    """Representation of city """
+    if models.storage_t == "db":
+        __tablename__ = 'cities'
         state_id = Column(String(60), ForeignKey('states.id'), nullable=False)
-        places = relationship("Place", cascade='all, delete, delete-orphan',
-                              backref="cities")
+        name = Column(String(128), nullable=False)
+        places = relationship("Place",
+                              backref="cities",
+                              cascade="all, delete, delete-orphan")
     else:
-        state_id = ''
-        name = ''
+        state_id = ""
+        name = ""
 
-    if storage_type != 'db':
-        @property
-        def places(self):
-            """
-            getter for places
-            :return: list of places in that city
-            """
-            all_places = models.storage.all("Place")
-
-            result = []
-
-            for obj in all_places.values():
-                if str(obj.city_id) == str(self.id):
-                    result.append(obj)
-
-            return result
+    def __init__(self, *args, **kwargs):
+        """initializes city"""
+        super().__init__(*args, **kwargs)
