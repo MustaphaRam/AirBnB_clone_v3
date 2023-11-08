@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-Unit Test for Review Class
+Unit Test for City Class
 """
 import unittest
 from datetime import datetime
@@ -8,57 +8,57 @@ import models
 import json
 import os
 
-Review = models.review.Review
+City = models.city.City
 BaseModel = models.base_model.BaseModel
 storage_type = os.environ.get('HBNB_TYPE_STORAGE')
 
 
-class TestReviewDocs(unittest.TestCase):
+class TestCityDocs(unittest.TestCase):
     """Class for testing BaseModel docs"""
 
     @classmethod
     def setUpClass(cls):
         print('\n\n.................................')
         print('..... Testing Documentation .....')
-        print('.......   Review  Class   .......')
+        print('........   City Class   ........')
         print('.................................\n\n')
 
     def test_doc_file(self):
         """... documentation for the file"""
-        expected = '\nReview Class from Models Module\n'
-        actual = models.review.__doc__
+        expected = '\nCity Class from Models Module\n'
+        actual = models.city.__doc__
         self.assertEqual(expected, actual)
 
     def test_doc_class(self):
         """... documentation for the class"""
-        expected = 'Review class handles all application reviews'
-        actual = Review.__doc__
+        expected = 'City class handles all application cities'
+        actual = City.__doc__
         self.assertEqual(expected, actual)
 
 
-class TestReviewInstances(unittest.TestCase):
+class TestCityInstances(unittest.TestCase):
     """testing for class instances"""
 
     @classmethod
     def setUpClass(cls):
         print('\n\n.................................')
         print('....... Testing Functions .......')
-        print('........  Review  Class  ........')
+        print('.........  City Class  .........')
         print('.................................\n\n')
 
     def setUp(self):
-        """initializes new review for testing"""
-        self.review = Review()
+        """initializes new city for testing"""
+        self.city = City()
 
     def test_instantiation(self):
-        """... checks if Review is properly instantiated"""
-        self.assertIsInstance(self.review, Review)
+        """... checks if City is properly instantiated"""
+        self.assertIsInstance(self.city, City)
 
     @unittest.skipIf(storage_type == 'db', 'skip if environ is db')
     def test_to_string(self):
         """... checks if BaseModel is properly casted to string"""
-        my_str = str(self.review)
-        my_list = ['Review', 'id', 'created_at']
+        my_str = str(self.city)
+        my_list = ['City', 'id', 'created_at']
         actual = 0
         for sub_str in my_list:
             if sub_str in my_str:
@@ -68,7 +68,8 @@ class TestReviewInstances(unittest.TestCase):
     @unittest.skipIf(storage_type == 'db', 'skip if environ is db')
     def test_instantiation_no_updated(self):
         """... should not have updated attribute"""
-        my_str = str(self.review)
+        self.city = City()
+        my_str = str(self.city)
         actual = 0
         if 'updated_at' in my_str:
             actual += 1
@@ -77,41 +78,42 @@ class TestReviewInstances(unittest.TestCase):
     @unittest.skipIf(storage_type == 'db', 'skip if environ is db')
     def test_updated_at(self):
         """... save function should add updated_at attribute"""
-        self.review.save()
-        actual = type(self.review.updated_at)
+        self.city.save()
+        actual = type(self.city.updated_at)
         expected = type(datetime.now())
         self.assertEqual(expected, actual)
 
     @unittest.skipIf(storage_type == 'db', 'skip if environ is db')
     def test_to_json(self):
         """... to_json should return serializable dict object"""
-        self.review_json = self.review.to_json()
+        self.city_json = self.city.to_json()
         actual = 1
         try:
-            serialized = json.dumps(self.review_json)
+            serialized = json.dumps(self.city_json)
         except:
             actual = 0
         self.assertTrue(1 == actual)
 
     @unittest.skipIf(storage_type == 'db', 'skip if environ is db')
     def test_json_class(self):
-        """... to_json should include class key with value Review"""
-        self.review_json = self.review.to_json()
+        """... to_json should include class key with value City"""
+        self.city_json = self.city.to_json()
         actual = None
-        if self.review_json['__class__']:
-            actual = self.review_json['__class__']
-        expected = 'Review'
+        if self.city_json['__class__']:
+            actual = self.city_json['__class__']
+        expected = 'City'
         self.assertEqual(expected, actual)
 
-    def test_review_attribute(self):
-        """... add review attribute"""
-        self.review.text = "This place smells"
-        if hasattr(self.review, 'text'):
-            actual = self.review.text
+    def test_state_attribute(self):
+        """... add state attribute"""
+        self.city.state_id = 'IL'
+        if hasattr(self.city, 'state_id'):
+            actual = self.city.state_id
         else:
-            acual = ''
-        expected = "This place smells"
+            actual = ''
+        expected = 'IL'
         self.assertEqual(expected, actual)
+
 
 if __name__ == '__main__':
     unittest.main
